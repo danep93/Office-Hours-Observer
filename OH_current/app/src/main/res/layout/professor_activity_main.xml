@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:weightSum="1">
+    <!--android:padding="10dp"
+
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    >
+    -->
+    <include
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/toolbar_layout"
+        >
+
+    </include>
+
+    <ImageButton
+        android:id="@+id/bPlus"
+        android:src="@drawable/plus_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right" />
+
+    <Button
+        android:id="@+id/bAddTa"
+        android:text="Add TA"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_weight="0.16" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="Hello Professor!"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/bLogout"
+        android:text="Logout"
+        android:layout_height="wrap_content" />
+
+
+
+</LinearLayout>

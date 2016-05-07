@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:padding="100dp"
+    android:layout_width="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="Class Code"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/etCode"
+        android:layout_width="match_parent"
+        android:hint="eg. CMSC436"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="Class Password"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/etClassPassword"
+        android:layout_width="match_parent"
+        android:inputType="textPassword"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="Verify Password"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/etVerifyPassword"
+        android:layout_width="match_parent"
+        android:inputType="textPassword"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/bCreateClass"
+        android:text="Create Class"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>
