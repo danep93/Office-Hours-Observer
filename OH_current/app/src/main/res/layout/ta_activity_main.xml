@@ -26,6 +26,12 @@
         android:layout_width="wrap_content"
         android:text="Hello TA!"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/bAddClass"
+        android:text="Add Class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right" />
     <EditText
         android:id="@+id/etName"
         android:layout_width="wrap_content"
@@ -35,6 +41,7 @@
         android:id="@+id/bLogout"
         android:text="Logout"
         android:layout_height="wrap_content" />
+
 
 
 

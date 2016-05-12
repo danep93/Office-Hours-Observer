@@ -15,11 +15,12 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 
-public class StudentClassAdder extends AppCompatActivity implements View.OnClickListener {
+public class TAClassAdder extends AppCompatActivity implements View.OnClickListener {
 
     EditText etClassCode;
     EditText etClassPassword;
-    String studentEmail = null;
+    EditText etVerificationCode;
+    String taEmail = null;
     UserLocalStore userLocalStore;
     Button bAddClass;
 
@@ -35,17 +36,17 @@ public class StudentClassAdder extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_class_adder);
+        setContentView(R.layout.activity_ta_class_adder);
         Bundle extra = getIntent().getExtras();
         if(extra != null){
-            studentEmail = extra.getString("studentEmail");
+            taEmail = extra.getString("taEmail");
         }
         userLocalStore = new UserLocalStore(this);
         etClassCode = (EditText) findViewById(R.id.etCode);
         etClassPassword = (EditText) findViewById(R.id.etClassPassword);
+        etVerificationCode = (EditText) findViewById(R.id.etVerificationCode);
         bAddClass = (Button) findViewById(R.id.bAddClass);
         bAddClass.setOnClickListener(this);
-
     }
 
     /** ASYNC TASK **/
@@ -57,12 +58,13 @@ public class StudentClassAdder extends AppCompatActivity implements View.OnClick
         Gson gson = new Gson();
         String classPassword = etClassPassword.getText().toString().trim();
         String classCode = etClassCode.getText().toString().trim();
+        String taVerificationCode = etVerificationCode.toString().trim();
 
         @Override
         protected void onPreExecute() {
             Log.d("preExecute", "here");
             super.onPreExecute();
-            loading = ProgressDialog.show(StudentClassAdder.this, "Validating Password",null, true, true);
+            loading = ProgressDialog.show(TAClassAdder.this, "Validating Credentials",null, true, true);
         }
 
         @Override
@@ -70,6 +72,7 @@ public class StudentClassAdder extends AppCompatActivity implements View.OnClick
             HashMap<String, String> data = new HashMap<String,String>();
             data.put("code", classCode);
             data.put("password", classPassword);
+            data.put("verification_code", taVerificationCode);
             dbResponse = luc.sendPostRequest(URL.FIND_CLASS_URL,data);
             return dbResponse;
 
@@ -83,10 +86,9 @@ public class StudentClassAdder extends AppCompatActivity implements View.OnClick
             }
             else{
                 Toast.makeText(getApplicationContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
-                Intent in = new Intent(StudentClassAdder.this, StudentClassAdder.class);
-                in.putExtra("studentEmail", studentEmail);
+                Intent in = new Intent(TAClassAdder.this, TAClassAdder.class);
+                in.putExtra("taEmail", taEmail);
                 startActivity(in);
-
             }
 
         }
@@ -102,11 +104,12 @@ public class StudentClassAdder extends AppCompatActivity implements View.OnClick
         Gson gson = new Gson();
         String classPassword = etClassPassword.getText().toString().trim();
         String classCode = etClassCode.getText().toString().trim();
+        String taVerificationCode = etVerificationCode.toString().trim();
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = ProgressDialog.show(StudentClassAdder.this, "Adding Class",null, true, true);
+            loading = ProgressDialog.show(TAClassAdder.this, "Adding Class",null, true, true);
         }
 
         @Override
@@ -114,8 +117,9 @@ public class StudentClassAdder extends AppCompatActivity implements View.OnClick
             HashMap<String, String> data = new HashMap<String,String>();
             data.put("code", classCode);
             data.put("password", classPassword);
-            data.put("email", studentEmail);
-            dbResponse = luc.sendPostRequest(URL.ADD_CLASS_URL,data);
+            data.put("email", taEmail);
+            data.put("verification", taVerificationCode);
+            dbResponse = luc.sendPostRequest(URL.TA_ADD_CLASS_URL,data);
             return dbResponse;
 
         }
@@ -131,7 +135,7 @@ public class StudentClassAdder extends AppCompatActivity implements View.OnClick
             else{
                 Toast.makeText(getApplicationContext(), "Error: Class could not be added", Toast.LENGTH_SHORT).show();
             }
-            Intent in = new Intent(StudentClassAdder.this, StudentMainActivity.class);
+            Intent in = new Intent(TAClassAdder.this, TAMainActivity.class);
             startActivity(in);
 
         }

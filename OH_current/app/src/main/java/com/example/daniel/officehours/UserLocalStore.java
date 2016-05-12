@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Daniel on 3/17/16.
  */
 public class UserLocalStore {
     public static String SP_NAME;
-    public static int idCounter = 1;
     SharedPreferences userLocalDatabase;
 
     public static void setName(String name){
@@ -33,9 +35,9 @@ public class UserLocalStore {
         spEditor.putString("email", user.email);
         spEditor.putString("password", user.password);
         spEditor.putInt("userType", user.userType);
-        for(String s : user.getClassList()){
-            storeUserClass(s);
-        }
+        Set<String> classSet = new HashSet<String>();
+        classSet.addAll(user.getClassList());
+        spEditor.putStringSet("classList", classSet);
         spEditor.commit();
     }
 
@@ -48,19 +50,17 @@ public class UserLocalStore {
         }
     }
 
-    public void storeUserClass(String classCode){
-        SharedPreferences.Editor spEditor = userLocalDatabase.edit(); //can edit attributes
-        spEditor.putString("class_"+idCounter, classCode);
-        spEditor.commit();
-        idCounter++;
-    }
-
     public User getLoggedInUser() {
         String name = userLocalDatabase.getString("name", ""); //default value is nothing
         String password = userLocalDatabase.getString("password", "");
         String email = userLocalDatabase.getString("email", "");
         Integer userType =userLocalDatabase.getInt("userType", 0);
+        HashSet<String> defaulter = new HashSet<String>();
+        Set<String> classSet = userLocalDatabase.getStringSet("classList", defaulter);
         User storedUser = new User(name, email, password, userType);
+        for(String course : classSet){
+            storedUser.addClass(course);
+        }
         return storedUser;
     }
 
@@ -74,7 +74,6 @@ public class UserLocalStore {
     public void clearUserData(){
         SharedPreferences.Editor spEditor = userLocalDatabase.edit();
         spEditor.clear();
-        idCounter = 1;
         spEditor.commit();
     }
 

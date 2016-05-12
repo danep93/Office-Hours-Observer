@@ -35,7 +35,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".StudentClassAdder" />
         <activity android:name=".ClassCreator" />
-        <activity android:name=".TAAdder"></activity>
+        <activity android:name=".TAClassAdder"></activity>
     </application>
 
 </manifest>

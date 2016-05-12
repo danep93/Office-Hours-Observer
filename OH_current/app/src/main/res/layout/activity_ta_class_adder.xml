@@ -29,33 +29,20 @@
         android:layout_height="wrap_content" />
     <TextView
         android:layout_width="wrap_content"
-        android:text="Verify Password"
+        android:text="TA Verification Code"
         android:layout_height="wrap_content" />
     <EditText
-        android:id="@+id/etVerifyPassword"
+        android:id="@+id/etVerificationCode"
         android:layout_width="match_parent"
         android:inputType="textPassword"
         android:layout_marginBottom="10dp"
         android:layout_height="wrap_content" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:text="TA Verification Code"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/etTAVerificationCode"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_height="wrap_content" />
     <Button
         android:layout_width="match_parent"
-        android:id="@+id/bGenerateCode"
-        android:text="Generate Code"
-        android:layout_height="wrap_content" />
-    <Button
-        android:layout_width="match_parent"
-        android:id="@+id/bCreateClass"
-        android:text="Create Class"
+        android:id="@+id/bAddClass"
+        android:text="Add Class"
         android:layout_height="wrap_content" />
 
 
 </LinearLayout>
+

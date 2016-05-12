@@ -26,6 +26,7 @@ public class TAMainActivity extends AppCompatActivity implements View.OnClickLis
     EditText editTextPassword;
     EditText editTextEmail;
     Button bLogout;
+    Button bAddClass;
     UserLocalStore userLocalStore;
     Toolbar toolbar;
 
@@ -39,6 +40,11 @@ public class TAMainActivity extends AppCompatActivity implements View.OnClickLis
                 userLocalStore.clearUserData();
                 userLocalStore.setUserLoggedIn(false);
                 startActivity(new Intent(this, Login.class));
+                break;
+            case R.id.bAddClass:
+                Intent in = new Intent(this, TAClassAdder.class);
+                in.putExtra("taEmail", userLocalStore.getLoggedInUser().email);
+                startActivity(in);
                 break;
         }
     }
@@ -75,11 +81,12 @@ public class TAMainActivity extends AppCompatActivity implements View.OnClickLis
         //textViewName = (TextView)findViewById(R.id.tvName);
         //textViewName.setText(UserLocalStore.SP_NAME);
         bLogout = (Button) findViewById(R.id.bLogout);
+        bAddClass = (Button) findViewById(R.id.bAddClass);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         bLogout.setOnClickListener(this);
+        bAddClass.setOnClickListener(this);
         userLocalStore = new UserLocalStore(this);
     }
 }

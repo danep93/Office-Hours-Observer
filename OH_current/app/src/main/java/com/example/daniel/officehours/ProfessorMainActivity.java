@@ -24,7 +24,6 @@ public class ProfessorMainActivity extends AppCompatActivity implements View.OnC
     UserLocalStore userLocalStore;
     Toolbar toolbar;
     ImageButton bPlus;
-    Button bAddTA;
 
 
 
@@ -39,16 +38,6 @@ public class ProfessorMainActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.bPlus:
                 startActivity(new Intent(this, ClassCreator.class));
-                break;
-            case R.id.bAddTa:
-                if(userLocalStore.getLoggedInUser().getClassList().size() > 0){
-                    Intent in = new Intent(this, TAAdder.class);
-                    in.putExtra("classList", userLocalStore.getLoggedInUser().getClassList());
-                    startActivity(in);
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Must create class before adding TA", Toast.LENGTH_SHORT).show();
-                }
                 break;
         }
     }
@@ -88,12 +77,10 @@ public class ProfessorMainActivity extends AppCompatActivity implements View.OnC
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         bPlus = (ImageButton) findViewById(R.id.bPlus);
-        bAddTA = (Button) findViewById(R.id.bAddTa);
         userLocalStore = new UserLocalStore(this);
 
         bPlus.setOnClickListener(this);
         bLogout.setOnClickListener(this);
-        bAddTA.setOnClickListener(this);
 
 
     }

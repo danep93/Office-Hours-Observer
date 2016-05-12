@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,11 +21,16 @@ public class ClassCreator extends AppCompatActivity implements View.OnClickListe
     EditText etClassCode;
     EditText etClassPassword;
     EditText etVerifyPassword;
+    EditText etVerificationCode;
+    Button bGenerateCode;
     Button bCreateClass;
     UserLocalStore userLocalStore;
     String classPassword;
     String verifyPassword;
     String classCode;
+
+    static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
+    static SecureRandom rnd = new SecureRandom();
 
     @Override
     public void onClick(View v) {
@@ -37,13 +43,18 @@ public class ClassCreator extends AppCompatActivity implements View.OnClickListe
                     Log.d("reach", "inside create class");
                     Toast.makeText(getApplicationContext(), "passwords don't match", Toast.LENGTH_SHORT).show();
                 }
+                else if (etVerificationCode.getText().toString().length() <= 0){
+                    Toast.makeText(getApplicationContext(), "generate TA Code", Toast.LENGTH_SHORT).show();
+                }
                 else{
                     Log.d("reach","password is " +classPassword + "verify is " + verifyPassword);
                     ClassCreatorTask task = new ClassCreatorTask();
                     task.execute();
                 }
                 break;
-
+            case R.id.bGenerateCode:
+                String verificationCode = this.generateVerificationCode(classCode);
+                etVerificationCode.setText(verificationCode);
         }
     }
 
@@ -54,11 +65,27 @@ public class ClassCreator extends AppCompatActivity implements View.OnClickListe
         etClassCode = (EditText) findViewById(R.id.etCode);
         etClassPassword = (EditText) findViewById(R.id.etClassPassword);
         etVerifyPassword = (EditText) findViewById(R.id.etVerifyPassword);
+        etVerificationCode = (EditText) findViewById(R.id.etTAVerificationCode);
+        bGenerateCode = (Button) findViewById(R.id.bGenerateCode);
 
         bCreateClass = (Button) findViewById(R.id.bCreateClass);
+        bGenerateCode.setOnClickListener(this);
         bCreateClass.setOnClickListener(this);
 
         userLocalStore = new UserLocalStore(this);
+    }
+
+    public String generateVerificationCode(String classCode){
+        StringBuilder sb = new StringBuilder(7);
+        //extract numbers from class code
+        String codeNumbers = classCode.substring(4); //takes out CMSC or ENME
+        sb.append(codeNumbers);
+        for( int i = 0; i < 4; i++ ){
+            sb.append(alphabet.charAt(rnd.nextInt(alphabet.length())));
+        }
+        return sb.toString();
+
+
     }
 
     /**ASYNC TASK**/
@@ -68,6 +95,8 @@ public class ClassCreator extends AppCompatActivity implements View.OnClickListe
         DBConnectionClass luc = new DBConnectionClass();
         String dbResponse = "";
         Gson gson = new Gson();
+        String verificationCode = etVerificationCode.getText().toString().trim();
+        User loggedInUser = null;
 
         @Override
         protected void onPreExecute() {
@@ -82,6 +111,7 @@ public class ClassCreator extends AppCompatActivity implements View.OnClickListe
             data.put("code", classCode);
             data.put("password", classPassword);
             data.put("email", userLocalStore.getLoggedInUser().email);
+            data.put("ta_verification", verificationCode);
             dbResponse = luc.sendPostRequest(URL.CREATE_CLASS_URL,data);
             return dbResponse;
         }
@@ -90,9 +120,9 @@ public class ClassCreator extends AppCompatActivity implements View.OnClickListe
             if(dbResponse != null){
                 Successful response = gson.fromJson(dbResponse, Successful.class);
                 if(response.getSuccess()){
-                    User loggedInUser = userLocalStore.getLoggedInUser();
+                    loggedInUser = userLocalStore.getLoggedInUser();
                     loggedInUser.addClass(classCode);
-                    userLocalStore.storeUserClass(classCode);
+                    userLocalStore.storeUserData(loggedInUser);
                     Toast.makeText(getApplicationContext(), "Class Successfully Created", Toast.LENGTH_SHORT).show();
                     Log.d("reach", "in post execute");
                     Log.d("user name",userLocalStore.getLoggedInName());
